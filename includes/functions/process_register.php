@@ -2,15 +2,12 @@
 <?php
 session_start();
 
-// Параметры соединения с базой данных
-$db_host = 'localhost';
-$db_name = 'host1421897_game';
-$db_user = 'host1421897_game';
-$db_pass = '1234567890';
+// Подключаем файл конфигурации
+require_once '/home/host1421897/sakhwow.su/htdocs/www/includes/config.php';
 
 try {
     // Соединение с базой данных
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Получаем данные из формы
@@ -45,10 +42,13 @@ try {
             throw new Exception('Недопустимый класс персонажа');
     }
 
+    // Устанавливаем начальный опыт в 10 единиц
+    $experience = 10;
+
     // Подготовленная SQL-запрос на добавление нового пользователя
     $stmt = $pdo->prepare(
-        "INSERT INTO users (username, email, password_hash, character_class, gender, side, health, damage, defense) 
-         VALUES (:username, :email, :password, :char_class, :gender, :side, :health, :damage, :defense)"
+        "INSERT INTO users (username, email, password_hash, character_class, gender, side, health, damage, defense, experience) 
+         VALUES (:username, :email, :password, :char_class, :gender, :side, :health, :damage, :defense, :experience)"
     );
 
     // Выполняем запрос
@@ -61,7 +61,8 @@ try {
         ':side' => $side,
         ':health' => $health,
         ':damage' => $damage,
-        ':defense' => $defense
+        ':defense' => $defense,
+        ':experience' => $experience
     ])) {
         session_regenerate_id(); // Генерируем новый идентификатор сессии
         $_SESSION['registered_user'] = ['username' => $username, 'email' => $email]; // Сохраняем данные в сессии

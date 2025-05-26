@@ -1,12 +1,6 @@
 <?php
-/**
- * Index_Footer.php
- *
- * Автономный файл для отображения нижнего колонтитула (футера),
- * включающий дату и время, скорость загрузки страницы и контактные ссылки.
- */
-
-// Объявляем начало страницы
+// В самом начале вашего скрипта (например, в index.php)
+$loadStart = microtime(true);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -50,18 +44,17 @@
         12+
     </div>
 
-    <!-- Текущие дата и время в Москве -->
-    <?php
-    date_default_timezone_set('Europe/Moscow');
-    echo '' . date('H:i d.m.Y') . '<br>';
-    ?>
+   <!-- Текущие дата и время в Сахалинской области -->
+<?php
+date_default_timezone_set('Asia/Sakhalin');
+echo '' . date('H:i') . ',  ' . date('d.m.Y') . '<br>';
+?>
 
     <!-- Измерение скорости загрузки страницы -->
     <?php
-    global $loadStart; // Используем глобальную переменную loadStart, заданную в основном файле
     $loadEnd = microtime(true);
-    $loadingTimeSeconds = number_format(($loadEnd - $loadStart), 3); // Округляем до 3-х десятичных знаков
-    echo '| ' . str_replace('.', ',', $loadingTimeSeconds) . ' сек<br>';
+    $loadingTimeSeconds = number_format(($loadEnd - $loadStart), 3, ',', '');
+    echo '| ' . $loadingTimeSeconds . ' сек<br>';
     ?>
 </div>
 

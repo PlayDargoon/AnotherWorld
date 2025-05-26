@@ -12,6 +12,9 @@
 // Подключаем файл конфигурации
 require_once '/home/host1421897/sakhwow.su/htdocs/www/includes/config.php';
 
+// Подключаем файл с функциями
+require_once '/home/host1421897/sakhwow.su/htdocs/www/includes/functions/user_functions.php';
+
 // Получаем ID пользователя из URL
 $userId = isset($_GET['id']) ? intval($_GET['id']) : null;
 
@@ -25,9 +28,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Получаем данные пользователя по его ID
-    $stmt = $pdo->prepare("SELECT health, vitality FROM users WHERE user_id=:user_id");
-    $stmt->execute([':user_id' => $userId]);
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    $userData = getUserData($pdo, $userId);
 
     if (!$userData) {
         die('Пользователь не найден!');
@@ -36,70 +37,55 @@ try {
     // Обновляем значение vitality
     $newVitality = $userData['health'] * 10;
     if ($newVitality !== $userData['vitality']) {
-        $stmt = $pdo->prepare("UPDATE users SET vitality = :vitality WHERE user_id = :user_id");
-        $stmt->execute([':vitality' => $newVitality, ':user_id' => $userId]);
+        updateVitality($pdo, $userId, $newVitality);
     }
 
     // Получаем обновленные данные пользователя
-    $stmt = $pdo->prepare("SELECT username, character_class, gender, side, level, experience, health, damage, defense, vitality, user_id, last_activity, created_at, play_time FROM users WHERE user_id=:user_id");
-    $stmt->execute([':user_id' => $userId]);
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+    $userData = getUpdatedUserData($pdo, $userId);
 
     if (!$userData) {
         die('Пользователь не найден!');
     }
 
+    // Получаем текущий опыт персонажа
+    $experienceData = getExperience($pdo, $userId);
+    $currentExperience = $experienceData['experience'];
+    $currentLevel = $experienceData['level'];
+
+    // Получаем идентификатор следующего уровня
+    $nextLevelId = getNextLevelId($pdo, $currentLevel);
+
+    // Получаем необходимое количество опыта для следующего уровня
+    $requiredExperience = getRequiredExperience($pdo, $nextLevelId);
+
+    // Вычисляем, сколько опыта осталось до следующего уровня
+    $remainingExperience = $requiredExperience - $currentExperience;
+    
+     // Вычисляем процент прогресса до следующего уровня
+    $progressPercentage = calculateProgressPercentage($currentExperience, $requiredExperience);
+
+
     // Определяем путь к изображению пола
-    $genderImagePath = $userData['gender'] === 'Male' ? 'sex_male.png' : 'sex_female.png';
+    $genderImagePath = getGenderImagePath($userData['gender']);
 
     // Перевод значений на русский язык
-    $sideTranslation = $userData['side'] === 'Light' ? 'Светлый' : 'Темный';
-    $classTranslation = '';
-    switch ($userData['character_class']) {
-        case 'Warrior':
-            $classTranslation = 'Воин';
-            break;
-        case 'Mage':
-            $classTranslation = 'Маг';
-            break;
-        case 'Monk':
-            $classTranslation = 'Монах';
-            break;
-    }
+    $sideTranslation = translateSide($userData['side']);
+    $classTranslation = translateClass($userData['character_class']);
 
     // Форматируем значения
-    $healthFormatted = number_format($userData['health'], 0, '.', ' ');
-    $strengthFormatted = number_format($userData['damage'], 0, '.', ' ');
-    $defenseFormatted = number_format($userData['defense'], 0, '.', ' ');
-    $vitalityFormatted = number_format($userData['vitality'], 0, '.', ' ');
+    $formattedValues = formatValues($userData['health'], $userData['damage'], $userData['defense'], $userData['vitality']);
 
     // Проверяем статус онлайн
-    $lastActivityTimestamp = strtotime($userData['last_activity']);
-    $now = time();
-    $onlineThreshold = 300; // Пользователь считается онлайн, если он был активен в последние 5 минут
-    $isOnline = ($now - $lastActivityTimestamp) <= $onlineThreshold;
+    $isOnline = isOnline(strtotime($userData['last_activity']));
 
     // Определение текущей страницы
-    switch ($_SERVER['REQUEST_URI']) {
-        case '/templates/user.php':
-            $pageTitle = 'Профиль персонажа';
-            break;
-        case '/templates/city.php':
-            $pageTitle = 'Город';
-            break;
-        default:
-            $pageTitle = 'Главная страница';
-            break;
-    }
+    $pageTitle = getPageTitle($_SERVER['REQUEST_URI']);
 
     // Дата регистрации
-    $registrationDate = date('d M Y', strtotime($userData['created_at']));
+    $registrationDate = getRegistrationDate($userData['created_at']);
 
     // Преобразуем игровое время в понятный формат
-    $playTimeInSeconds = isset($userData['play_time']) ? $userData['play_time'] : 0;
-    $hours = floor($playTimeInSeconds / 3600);
-    $minutes = floor(($playTimeInSeconds % 3600) / 60);
-    $seconds = $playTimeInSeconds % 60;
+    $playTime = formatPlayTime($userData['play_time']);
 
 } catch (PDOException $e) {
     die('Ошибка базы данных: ' . $e->getMessage());
@@ -125,11 +111,11 @@ try {
         <ol class="mt3">
             <li>
                 <img src="/images/icons/health.png" alt="." width="12" height="12" class="link-icon">
-                <span class="minor">Живучесть:</span> <span id="health-value"><?= $userData['health']; ?></span> (<span id="vitality-value"><?= $vitalityFormatted; ?></span> здоровья)
+                <span class="minor">Живучесть:</span> <span id="health-value"><?= $userData['health']; ?></span> (<span id="vitality-value"><?= $formattedValues['vitality']; ?></span> здоровья)
             </li>
             <li>
                 <img src="/images/icons/strength.png" alt="." width="12" height="12" class="link-icon">
-                <span class="minor">Сила:</span> <span><?= $userData['damage']; ?></span> (удар ~<span><?= $strengthFormatted; ?></span>)
+                <span class="minor">Сила:</span> <span><?= $userData['damage']; ?></span> (удар ~<span><?= $formattedValues['damage']; ?></span>)
             </li>
             <li>
                 <img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon">
@@ -140,16 +126,19 @@ try {
                 <span class="minor">Сумма характеристик:</span> <span><?= $userData['health'] + $userData['damage'] + $userData['defense']; ?></span>
             </li>
             <span class="minor">(без учета бонусов)</span><br>
+          
             <li>
                 <img src="/images/icons/experience_stroke.png" alt="" class="link-icon">
-                <span class="minor">Опыт:</span> 19864.44M / 25945.05M (18%)
+                <span class="minor">Опыт:</span> <?= $currentExperience; ?> / <?= $remainingExperience; ?> (<?= $progressPercentage; ?>%)
             </li>
+            
+            
         </ol>
         
         <!-- Игровое время -->
         <div>
             <img src="/images/icons/clock.png" alt="."> 
-            <span>Игровое время: <?= sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds); ?></span>
+            <span>Игровое время: <?= $playTime; ?></span>
         </div>
         
         <!-- Информация о персонаже -->

@@ -1,4 +1,4 @@
-// logout.php
+// update_online_time.php
 <?php
 session_start();
 
@@ -23,12 +23,12 @@ try {
     $stmt = $pdo->prepare("UPDATE users SET play_time = play_time + :elapsed_time WHERE user_id = :user_id");
     $stmt->execute([':elapsed_time' => $elapsedTime, ':user_id' => $userId]);
 
+    // Сбрасываем время начала игры
+    $_SESSION['game_start_time'] = time();
+
+    echo json_encode(['status' => 'success']);
+
 } catch (PDOException $e) {
     die('Ошибка базы данных: ' . $e->getMessage());
 }
-
-// Очищаем сессию и перенаправляем на главную страницу
-session_destroy();
-header('Location: /index.php');
-exit;
 ?>

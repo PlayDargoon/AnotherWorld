@@ -1,16 +1,13 @@
 <!-- process_login.php -->
 <?php
-session_start();
+session_start(); // Инициализация сессии
 
-// Параметры соединения с базой данных
-$db_host = 'localhost';
-$db_name = 'host1421897_game';
-$db_user = 'host1421897_game';
-$db_pass = '1234567890';
+// Подключаем файл конфигурации
+require_once '/home/host1421897/sakhwow.su/htdocs/www/includes/config.php';
 
 try {
     // Соединение с базой данных
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Получаем данные из формы
@@ -26,6 +23,10 @@ try {
         session_regenerate_id(); // Генерация нового идентификатора сессии
         $_SESSION['logged_in'] = true;
         $_SESSION['user_id'] = $user['user_id']; // Храним ID пользователя в сессии
+
+        // Устанавливаем время начала игры
+        $_SESSION['game_start_time'] = time();
+
         header('Location: /templates/city/city.php'); // Переход на игровую страницу города
         exit;
     } else {

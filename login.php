@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="css/style.css"> <!-- Подключаем ваш CSS-дизайн -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- Адаптация под мобильные устройства -->
 </head>
-
 <body id="body_id" ignorewebview="true">
 <div class="touch-influenced block-border">
 <div class="body">
@@ -40,15 +39,6 @@
 
 </br>
 
-
-
-
-
-
-
-
-
-
 </div>
 <div class="footer block-border-top">
 <a href="/index.php">
@@ -64,14 +54,9 @@
 
 </div>
 
-
-
-
 <?php
 require_once 'templates/index_footer.php';
 ?>
-
-
 
 </body>
 </html>
