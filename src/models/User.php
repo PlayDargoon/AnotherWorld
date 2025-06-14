@@ -171,4 +171,17 @@ class User
     {
         return $this->pdo->lastInsertId();
     }
+
+    /**
+     * Получает количество зарегистрированных пользователей
+     *
+     * @return int
+     */
+    public function getUserCount()
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM users");
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
 }

@@ -6,17 +6,20 @@ require_once 'src/controllers/LoginController.php';
 require_once 'src/controllers/RegisterController.php'; // Добавляем контроллер регистрации
 require_once 'src/controllers/ProfileController.php'; // Добавляем контроллер профиля
 require_once 'src/controllers/LogoutController.php'; // Добавляем контроллер выхода
+require_once 'src/controllers/ErrorController.php'; // Добавляем контроллер ошибок
 require_once 'src/models/User.php'; // Подключаем модель User
+require_once 'src/models/Home.php'; // Подключаем модель Home
 require_once 'src/services/DatabaseConnection.php';
 
 // Экземпляр модели
 $userModel = new User(DatabaseConnection::getInstance()->getPdo());
+$homeModel = new Home(DatabaseConnection::getInstance()->getPdo());
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 switch ($uri) {
     case '/': // Главная страница
-        $controller = new IndexController();
+        $controller = new IndexController($homeModel);
         $controller->index();
         break;
     case '/login': // Форма входа
@@ -55,5 +58,8 @@ switch ($uri) {
         $controller->index();
         break;
     default:
-        echo 'Страница не найдена!';
+        // Обработка 404 ошибки
+        $controller = new ErrorController();
+        $controller->notFound();
+        break;
 }

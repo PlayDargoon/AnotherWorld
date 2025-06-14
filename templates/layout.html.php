@@ -6,6 +6,7 @@
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Игра Иной Мир'; ?></title>
     <link rel="stylesheet" href="css/style.css"> <!-- Подключаем ваши стили -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- Адаптация под мобильные устройства -->
+    <link rel="icon" href="/favicon.png" type="image/x-icon"> <!-- Подключаем фавикон -->
 </head>
 
 

@@ -17,7 +17,7 @@
         </div>
 
         <img src="/images/icons/xswords.png" width="12" height="12" alt=".">
-        <span class="yellow">В игре уже  игроков</span>!<br />
+        <span class="yellow">В игре уже <?= $userCount ?>  игроков</span>!<br />
 
         <!-- ОПИСАНИЕ ИГРОВЫХ ЦЕННОСТЕЙ -->
         <h2 class="_font-art font16">Тебя ждет:</h2><br />
