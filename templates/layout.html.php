@@ -1,0 +1,36 @@
+<!-- templates/layout.html.php -->
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title><?php echo isset($pageTitle) ? $pageTitle : 'Игра Иной Мир'; ?></title>
+    <link rel="stylesheet" href="css/style.css"> <!-- Подключаем ваши стили -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!-- Адаптация под мобильные устройства -->
+</head>
+
+
+<body id="body_id" ignorewebview="true">
+
+<div class="touch-influence block-border">
+
+<div class="header small block-border-bottom">
+
+    <?php include 'partials/header.html.php'; ?> <!-- Шапка -->
+</div>
+
+        <?php include $contentFile; ?> <!-- Здесь отображается контент конкретной страницы -->
+
+
+
+
+</div>
+
+<span class>
+          <div class="b-mt-footer">
+                 <?php include 'partials/footer.html.php'; ?>
+          </div>
+</span>
+
+
+</body>
+</html>
