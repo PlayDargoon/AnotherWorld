@@ -1,6 +1,4 @@
 <!-- templates/pages/profile.html.php -->
-
-
 <body id="body_id" ignorewebview="true">
 
     <div class="body">
@@ -19,8 +17,8 @@
             <img src="/images/maneken/<?= $player['side'] ?>_<?= $player['class'] ?>_<?= $player['gender'] ?>.jpg" width="320" height="190">
 
             <div class="profile-info">
-                <p><strong>Опыт:</strong> <?= $player['exp'] ?></p>
-                <p><strong>Здоровье:</strong> <?= $player['health'] ?></p>
+
+
                 <p><strong>Сила:</strong> <?= $player['strength'] ?></p>
                 <p><strong>Защита:</strong> <?= $player['defense'] ?></p>
             </div>
@@ -36,26 +34,20 @@
                         <img src="/images/icons/crit.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Крит:</span>
                         <span>52.9%</span> <span class="minor">(удар ~<span>20 117,12</span>)</span>
                     </li>
-                    <li><img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Защита:</span> <span>10004</span> (<span>95,23%, мин: <img src="/images/icons/absolute_def_12.png" alt="a" width="12" height="12"> 2,53%</span>)</li>
-
-                    <li>
-                        <img src="/images/icons/black_magic.png" class="link-icon"><span class="minor">Защита от чёрной магии:</span>  <img src="/images/icons/black_magic.png"><span class="iEpic">-23%</span>
-                    </li>
+                    <li><img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Защита:</span> <span><?= $player['defense'] ?></span> (<span>95,23%, мин: <img src="/images/icons/absolute_def_12.png" alt="a" width="12" height="12"> 2,53%</span>)</li>
                     <li><img src="/images/icons/xswords.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сумма характеристик:</span> <span>34669</span></li>
                     <span class="minor">(без учета бонусов)</span><br>
-                    <li><img src="/images/icons/regen.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Регенерация:</span> <span>155</span>%</li>
 
                     <li>
-                        <img src="/images/icons/experience_stroke.png" alt="" class="link-icon"><span class="minor">Опыт:</span> 20326.42M / 25945.05M (24%)
+                        <img src="/images/icons/experience_stroke.png" alt="" class="link-icon"><span class="minor">Опыт:</span> <?= $player['exp'] ?>
                     </li>
-                    <li>
-                        <img src="/images/icons/guild_influence.png" alt="." height="12" width="12" class="link-icon"><span class="minor">Получено влияния:</span> 541
-                    </li>
-                    <li class="mt3">
-                        <img src="/images/icons/amulet.png" alt="." height="12" width="12" class="link-icon"><span class="minor">Сумма уровней амулетов:</span> 83
-                    </li>
+
+
                 </ol>
             </div>
+            <p><strong>Игровое время:</strong> <?= $gameTime ?></p>
+            <p><strong>Дата регистрации:</strong> <?= $registrationDate ?></p>
+
         </div>
         <!-- Кнопка выхода -->
         <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>

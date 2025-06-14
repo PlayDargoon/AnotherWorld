@@ -34,6 +34,9 @@ class LoginController
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['logged_in'] = true;
 
+            // Обновляем время входа
+            $this->userModel->updateLoginTime($user['id']);
+
             // Перенаправляем на страницу профиля
             header('Location: /profile');
             exit;

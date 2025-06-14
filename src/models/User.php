@@ -184,4 +184,136 @@ class User
         return $stmt->fetchColumn();
     }
 
+    /**
+     * Находит пользователя по токену для сброса пароля
+     *
+     * @param string $token
+     * @return array|null
+     */
+    public function findByPasswordResetToken(string $token)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM users WHERE password_reset_token = :token");
+        $stmt->execute(['token' => $token]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Обновляет пароль пользователя
+     *
+     * @param int $id
+     * @param string $password
+     * @return bool
+     */
+    public function updatePassword(int $id, string $password)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET password_hash = :password WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'password' => $password]);
+    }
+
+    /**
+     * Удаляет токен для сброса пароля
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function clearPasswordResetToken(int $id)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET password_reset_token = NULL WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Получает дату регистрации персонажа по идентификатору
+     *
+     * @param int $id
+     * @return string|null
+     */
+    public function getRegistrationDate(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT reg_date FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['reg_date'] : null;
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Обновляет время входа пользователя
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function updateLoginTime(int $id)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET login_time = :login_time WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'login_time' => date('Y-m-d H:i:s')]);
+    }
+
+    /**
+     * Обновляет время выхода пользователя
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function updateLogoutTime(int $id)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET logout_time = :logout_time WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'logout_time' => date('Y-m-d H:i:s')]);
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Обновляет общее игровое время пользователя
+     *
+     * @param int $id
+     * @param int $gameTime
+     * @return bool
+     */
+    public function updateTotalGameTime(int $id, int $gameTime)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET total_game_time = total_game_time + :gameTime WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'gameTime' => $gameTime]);
+    }
+
+    // ...
+
+    /**
+     * Получает общее игровое время пользователя
+     *
+     * @param int $id
+     * @return int|null
+     */
+    public function getTotalGameTime(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT total_game_time FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['total_game_time'] : null;
+    }
+    // ...
+
+    /**
+     * Получает время входа пользователя
+     *
+     * @param int $id
+     * @return string|null
+     */
+    public function getLoginTime(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT login_time FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['login_time'] : null;
+    }
+
+    // ...
+
+
 }
