@@ -16,19 +16,14 @@
         <div style="text-align:center;" class="p2">
             <img src="/images/maneken/<?= $player['side'] ?>_<?= $player['class'] ?>_<?= $player['gender'] ?>.jpg" width="320" height="190">
 
-            <div class="profile-info">
 
-
-                <p><strong>Сила:</strong> <?= $player['strength'] ?></p>
-                <p><strong>Защита:</strong> <?= $player['defense'] ?></p>
-            </div>
         </div>
 
         <div class="pb pt">
             <h2><a href="#">Характеристики</a></h2>
             <div>
                 <ol class="mt3">
-                    <li><img src="/images/icons/health.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Живучесть:</span> <span> <?= $player['health'] ?></span> (<span>129840</span> здоровья)</li>
+                    <li><img src="/images/icons/health.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Здоровье:</span> <span> <?= $player['health'] ?></span> (<span><?= $player['vitality'] ?></span> живучести)</li>
                     <li><img src="/images/icons/strength.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сила:</span> <span><?= $player['strength'] ?></span> (удар ~<span>11 696</span>)</li>
                     <li>
                         <img src="/images/icons/crit.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Крит:</span>
@@ -44,11 +39,37 @@
 
 
                 </ol>
+
+
             </div>
-            <p><strong>Игровое время:</strong> <?= $gameTime ?></p>
-            <p><strong>Дата регистрации:</strong> <?= $registrationDate ?></p>
+
+
+            <div class="pt">
+                <div class="pt">
+
+                    <div>
+                        <img src="/images/icons/clock.png" alt="."> <span>Игровое время: <?= $gameTime ?></span>
+                    </div>
+                    <div>
+                        <span><?= $status ?>, </span>
+                    </div>
+                    <div>
+                        <span class="minor"><?= $registrationDate ?></span>
+                    </div>
+
+                </div>
+                <div class="pt">
+
+
+                    <div class="pt small minor"><img src="/images/icons/game_master.png" alt="." width="12" height="12"> ID персонажа: <span><?= $characterId ?></span></div>
+                </div>
+
+
+
 
         </div>
+
+
         <!-- Кнопка выхода -->
         <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
             <a href="/logout" class="logout-button">Выйти</a>
@@ -56,7 +77,7 @@
 
     </div>
 
-
+    </div>
 
 
 

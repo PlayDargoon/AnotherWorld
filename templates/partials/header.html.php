@@ -7,7 +7,7 @@
                 <tr>
                     <td>
                         <img class="i12img" src="/images/icons/health.png" alt="хп" width="12px" height="12px">
-                        <span class="info"><?= $player['health'] ?></span>
+                        <span class="info"><?= $player['vitality'] ?></span>
 
                     </td>
 

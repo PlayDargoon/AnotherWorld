@@ -102,19 +102,6 @@ class User
         ]);
     }
 
-    /**
-     * Обновляет живучесть персонажа
-     *
-     * @param int $id
-     * @param int $health
-     * @return bool
-     */
-    public function updateVitality(int $id, int $health)
-    {
-        $vitality = $health * 10;
-        $stmt = $this->pdo->prepare("UPDATE users SET vitality = :vitality WHERE id = :id");
-        return $stmt->execute(['id' => $id, 'vitality' => $vitality]);
-    }
 
     /**
      * Удаляет пользователя по идентификатору
@@ -311,6 +298,23 @@ class User
         $stmt->execute(['id' => $id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ? $result['login_time'] : null;
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Обновляет живучесть персонажа
+     *
+     * @param int $id
+     * @param int $health
+     * @return bool
+     */
+    public function updateVitality(int $id, int $health)
+    {
+        $vitality = $health * 10;
+        $stmt = $this->pdo->prepare("UPDATE users SET vitality = :vitality WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'vitality' => $vitality]);
     }
 
     // ...
