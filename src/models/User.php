@@ -318,6 +318,189 @@ class User
     }
 
     // ...
+    // ...
+
+    /**
+     * Обновляет урон персонажа
+     *
+     * @param int $id
+     * @param int $strength
+     * @return bool
+     */
+    public function updateDamage(int $id, int $strength)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET damage = :damage WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'damage' => $strength]);
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Получает урон персонажа
+     *
+     * @param int $id
+     * @return int|null
+     */
+    public function getDamage(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT damage FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['damage'] : null;
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Получает золото персонажа
+     *
+     * @param int $id
+     * @return int|null
+     */
+    public function getGold(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT gold FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['gold'] : null;
+    }
+
+    /**
+     * Получает серебро персонажа
+     *
+     * @param int $id
+     * @return int|null
+     */
+    public function getSilver(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT silver FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['silver'] : null;
+    }
+
+    /**
+     * Обновляет золото персонажа
+     *
+     * @param int $id
+     * @param int $gold
+     * @return bool
+     */
+    public function updateGold(int $id, int $gold)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET gold = :gold WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'gold' => $gold]);
+    }
+
+    /**
+     * Обновляет серебро персонажа
+     *
+     * @param int $id
+     * @param int $silver
+     * @return bool
+     */
+    public function updateSilver(int $id, int $silver)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET silver = :silver WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'silver' => $silver]);
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Изменяет золото персонажа
+     *
+     * @param int $id
+     * @param int $amount
+     * @return bool
+     */
+    public function changeGold(int $id, int $amount)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET gold = gold + :amount WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'amount' => $amount]);
+    }
+
+    /**
+     * Изменяет серебро персонажа
+     *
+     * @param int $id
+     * @param int $amount
+     * @return bool
+     */
+    public function changeSilver(int $id, int $amount)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET silver = silver + :amount WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'amount' => $amount]);
+    }
+
+    // ...
+    // ...
+
+    /**
+     * Изменяет валюту персонажа
+     *
+     * @param int $id
+     * @param int $goldAmount
+     * @param int $silverAmount
+     * @return bool
+     */
+    public function changeCurrency(int $id, int $goldAmount, int $silverAmount)
+    {
+        // Получаем текущее количество золота и серебра
+        $stmt = $this->pdo->prepare("SELECT gold, silver FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $currentGold = $result['gold'];
+        $currentSilver = $result['silver'];
+
+        // Обновляем количество серебра
+        $newSilver = $currentSilver + $silverAmount;
+        $goldFromSilver = floor($newSilver / 100);
+        $newSilver %= 100;
+
+        // Обновляем количество золота
+        $newGold = $currentGold + $goldAmount + $goldFromSilver;
+
+        // Обновляем валюту в базе данных
+        $stmt = $this->pdo->prepare("UPDATE users SET gold = :gold, silver = :silver WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'gold' => $newGold, 'silver' => $newSilver]);
+    }
+
+    // ...
+    // ... (остальные методы)
+
+    /**
+     * Получает процент критического урона персонажа
+     *
+     * @param int $id
+     * @return int|null
+     */
+    public function getCritChance(int $id)
+    {
+        $stmt = $this->pdo->prepare("SELECT crit_chance FROM users WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result['crit_chance'] : null;
+    }
+
+    /**
+     * Обновляет процент критического урона персонажа
+     *
+     * @param int $id
+     * @param int $critChance
+     * @return bool
+     */
+    public function updateCritChance(int $id, int $critChance)
+    {
+        $stmt = $this->pdo->prepare("UPDATE users SET crit_chance = :critChance WHERE id = :id");
+        return $stmt->execute(['id' => $id, 'critChance' => $critChance]);
+    }
+
+    // ... (остальные методы)
+
 
 
 }

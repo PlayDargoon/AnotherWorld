@@ -24,10 +24,10 @@
             <div>
                 <ol class="mt3">
                     <li><img src="/images/icons/health.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Здоровье:</span> <span> <?= $player['health'] ?></span> (<span><?= $player['vitality'] ?></span> живучести)</li>
-                    <li><img src="/images/icons/strength.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сила:</span> <span><?= $player['strength'] ?></span> (удар ~<span>11 696</span>)</li>
+                    <li><img src="/images/icons/strength.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сила:</span> <span><?= $player['strength'] ?></span> (удар ~<span><?= $player['damage'] ?></span>)</li>
                     <li>
                         <img src="/images/icons/crit.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Крит:</span>
-                        <span>52.9%</span> <span class="minor">(удар ~<span>20 117,12</span>)</span>
+                        <span>52.9%</span> <span class="minor">(удар ~<span><?= $critChance ?></span>)</span>
                     </li>
                     <li><img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Защита:</span> <span><?= $player['defense'] ?></span> (<span>95,23%, мин: <img src="/images/icons/absolute_def_12.png" alt="a" width="12" height="12"> 2,53%</span>)</li>
                     <li><img src="/images/icons/xswords.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сумма характеристик:</span> <span>34669</span></li>

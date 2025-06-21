@@ -11,6 +11,16 @@
 
                     </td>
 
+                    <td align="right">
+                        <span>
+                            <img src="/images/icons/money.png" class="i12img" width="12" height="12">
+                            <?= $gold ?>
+
+                            <img src="/images/icons/money_grey.png" class="i12img" width="12" height="12">
+                            <?= $silver ?>
+                        </span>
+                    </td>
+
                 </tr>
             </tbody>
         </table>

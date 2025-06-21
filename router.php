@@ -77,6 +77,14 @@ switch ($uri) {
             $controller->index();
         }
         break;
+    case '/spend_currency': // Тестовая функция для траты валюты
+        $controller = new ProfileController($userModel);
+        $controller->spendCurrency();
+        break;
+    case '/earn_currency': // Тестовая функция для добычи валюты
+        $controller = new ProfileController($userModel);
+        $controller->earnCurrency();
+        break;
     default:
         // Обработка 404 ошибки
         $controller = new ErrorController();
