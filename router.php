@@ -8,6 +8,7 @@ require_once 'src/controllers/ProfileController.php'; // Добавляем ко
 require_once 'src/controllers/LogoutController.php'; // Добавляем контроллер выхода
 require_once 'src/controllers/ForgotPasswordController.php'; // Добавляем контроллер восстановления пароля
 require_once 'src/controllers/ResetPasswordController.php'; // Добавляем контроллер сброса пароля
+require_once 'src/controllers/StatsController.php'; // Добавляем контроллер характеристик
 require_once 'src/controllers/ErrorController.php'; // Добавляем контроллер ошибок
 require_once 'src/models/User.php'; // Подключаем модель User
 require_once 'src/models/Home.php'; // Подключаем модель Home
@@ -77,13 +78,9 @@ switch ($uri) {
             $controller->index();
         }
         break;
-    case '/spend_currency': // Тестовая функция для траты валюты
-        $controller = new ProfileController($userModel);
-        $controller->spendCurrency();
-        break;
-    case '/earn_currency': // Тестовая функция для добычи валюты
-        $controller = new ProfileController($userModel);
-        $controller->earnCurrency();
+    case '/stats': // Страница характеристик
+        $controller = new StatsController($userModel);
+        $controller->index();
         break;
     default:
         // Обработка 404 ошибки

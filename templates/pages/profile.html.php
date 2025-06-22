@@ -20,17 +20,17 @@
         </div>
 
         <div class="pb pt">
-            <h2><a href="#">Характеристики</a></h2>
+            <h2><a href="/stats?id=<?= $player['id'] ?>">Характеристики</a></h2>
             <div>
                 <ol class="mt3">
                     <li><img src="/images/icons/health.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Здоровье:</span> <span> <?= $player['health'] ?></span> (<span><?= $player['vitality'] ?></span> живучести)</li>
                     <li><img src="/images/icons/strength.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сила:</span> <span><?= $player['strength'] ?></span> (удар ~<span><?= $player['damage'] ?></span>)</li>
                     <li>
                         <img src="/images/icons/crit.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Крит:</span>
-                        <span>52.9%</span> <span class="minor">(удар ~<span><?= $critChance ?></span>)</span>
+                        <span><?= $critChance ?>%</span> <span class="minor">(удар ~<span>-</span>)</span>
                     </li>
-                    <li><img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Защита:</span> <span><?= $player['defense'] ?></span> (<span>95,23%, мин: <img src="/images/icons/absolute_def_12.png" alt="a" width="12" height="12"> 2,53%</span>)</li>
-                    <li><img src="/images/icons/xswords.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сумма характеристик:</span> <span>34669</span></li>
+                    <li><img src="/images/icons/armor.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Защита:</span> <span><?= $player['defense'] ?></span> </li>
+                    <li><img src="/images/icons/xswords.png" alt="." width="12" height="12" class="link-icon"><span class="minor">Сумма характеристик:</span> <span><?= $totalStats ?></span></li>
                     <span class="minor">(без учета бонусов)</span><br>
 
                     <li>
@@ -70,10 +70,7 @@
         </div>
 
 
-        <!-- Кнопка выхода -->
-        <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
-            <a href="/logout" class="logout-button">Выйти</a>
-        <?php endif; ?>
+
 
     </div>
 

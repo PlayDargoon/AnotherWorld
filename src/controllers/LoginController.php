@@ -33,6 +33,7 @@ class LoginController
             session_start();
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['logged_in'] = true;
+            $_SESSION['user_name'] = $user['char_name']; // Сохраняем имя пользователя в сессии
 
             // Обновляем время входа
             $this->userModel->updateLoginTime($user['id']);

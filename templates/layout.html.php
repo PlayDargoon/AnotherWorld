@@ -9,29 +9,28 @@
     <link rel="icon" href="/favicon.png" type="image/x-icon"> <!-- Подключаем фавикон -->
 </head>
 
-
 <body id="body_id" ignorewebview="true">
 
 <div class="touch-influence block-border">
 
-<div class="header small block-border-bottom">
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
+        <div class="header small block-border-bottom">
+            <?php include 'partials/header.html.php'; ?> <!-- Шапка -->
+        </div>
+    <?php endif; ?>
 
-    <?php include 'partials/header.html.php'; ?> <!-- Шапка -->
+    <?php include $contentFile; ?> <!-- Здесь отображается контент конкретной страницы -->
+
+    <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
+        <div class="footer block-border-top"></div>   <!-- специальный отступ  -->
+
+        <?php include 'partials/logged_footer.html.php'; ?> <!-- Подключаем футер для залогиненных пользователей -->
+    <?php endif; ?>
 </div>
 
-        <?php include $contentFile; ?> <!-- Здесь отображается контент конкретной страницы -->
-
-
-
-
+<div class="b-mt-footer">
+    <?php include 'partials/footer.html.php'; ?>
 </div>
-
-<span class>
-          <div class="b-mt-footer">
-                 <?php include 'partials/footer.html.php'; ?>
-          </div>
-</span>
-
 
 </body>
 </html>

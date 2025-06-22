@@ -11,6 +11,14 @@ class IndexController
 
     public function index()
     {
+        // Проверка авторизации
+        session_start();
+        if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
+            // Пользователь залогинен, перенаправляем на страницу профиля
+            header('Location: /profile');
+            exit;
+        }
+
         // Получаем количество пользователей
         $userCount = $this->homeModel->getUserCount();
 

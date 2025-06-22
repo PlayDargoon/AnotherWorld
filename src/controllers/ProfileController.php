@@ -82,6 +82,9 @@ class ProfileController
         // Получаем критический урон
         $critChance = $this->userModel->getCritChance($userId);
 
+        // Рассчитываем сумму характеристик
+        $totalStats = $player['health'] + $player['strength'] + $player['defense'];
+
         // Передаем данные в шаблон
         $data = [
             'pageTitle' => 'Игра "Иной Мир" - ' . $player['char_name'],
@@ -93,7 +96,8 @@ class ProfileController
             'characterId' => $player['id'], // Добавляем ID персонажа
             'gold' => $gold,
             'silver' => $silver,
-            'critChance' => $critChance
+            'critChance' => $critChance,
+            'totalStats' => $totalStats
         ];
 
         renderTemplate('layout.html.php', $data);
