@@ -15,7 +15,7 @@
 
     <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in']): ?>
         <div class="header small block-border-bottom">
-            <?php include 'partials/header.html.php'; ?> <!-- Шапка -->
+            <?php include 'partials/header.html.php'; ?> <!-- Шапка -->зз
         </div>
     <?php endif; ?>
 
